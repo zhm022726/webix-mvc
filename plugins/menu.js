@@ -1,3 +1,4 @@
+"use strict";
 define([], function(){
 
 	function select_menu(menu_id, id){
@@ -26,8 +27,12 @@ define([], function(){
 
 		$onui:function(ui, name, url, scope){
 			//menu handling
-			if (ui.$menu && url.length)
-				select_menu(ui.$menu, url[0].page);
+			if (ui.$menu && url.length){
+				var id = url[0].page;
+				if (id.indexOf(".") === 0)
+					id = id.substr(1);
+				select_menu(ui.$menu, id);
+			}
 		}
-	};
+	}
 });
