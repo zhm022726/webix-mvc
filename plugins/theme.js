@@ -1,11 +1,11 @@
-"use strict";
 define(function(){
 
-	var key = "--:sales-client-app:";
+	var key = "--:app:theme";
 	function _get_theme(){
+		var data = (webix.storage.local.get(key) || "siberia:webix").split(":");
 		return {
-			skin:webix.storage.local.get(key + "skin"),
-			name:webix.storage.local.get(key + "theme")
+			skin:data[1],
+			name:data[0]
 		};
 	}
 
@@ -18,25 +18,21 @@ define(function(){
 
 		var now = _get_theme();
 		if (now.skin != skin || now.name != name){
-			webix.storage.local.put(key + "skin", skin);
-			webix.storage.local.put(key + "theme", name);
+			webix.storage.local.put(key, name+":"+skin);
 			document.location.reload();
 		}
 	}
 
 	return {
-		$oninit: function(){
-			key = (app.id || "") + key;
+		$oninit: function(app, config){
+			key = (app.config.id || "") + key;
 		},
 
 		setTheme: _set_theme,
 		getTheme: _get_theme,
 		getThemeId: function(){
 			var theme = _get_theme();
-			if (theme)
-				return theme.name + ":" + theme.skin;
-
-			return "siberia:webix";
+			return theme.name + ":" + theme.skin;
 		}
 	};
 });

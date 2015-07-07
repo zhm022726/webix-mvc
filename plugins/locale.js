@@ -1,6 +1,6 @@
 "use strict";
 define([
-	"libs/polyglot"
+	"libs/polyglot/build/polyglot"
 ], function(){
 
 	var defaultlang = "en";
@@ -31,7 +31,7 @@ define([
 
 	return {
 		$oninit:function(app, config){
-			key = (app.id || "")+key;
+			key = (app.config.id || "")+key;
 
 			var lang = _get_lang() || config.lang || defaultlang;
 			_set_lang(lang);

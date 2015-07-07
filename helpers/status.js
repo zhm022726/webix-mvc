@@ -1,7 +1,7 @@
-"use strict";
 define([
-	"app"
-],function(app){
+	"app",
+	"locale"
+],function(app, _){
 
 	var template;
 	function message(text){
@@ -13,7 +13,7 @@ define([
 	var count = 0;
 	var iserror = false;
 
-	function setStatus(mode){
+	function setStatus(mode, err){
 		if (count < 0) count = 0;
 
 		if (mode == "saving"){
@@ -24,7 +24,7 @@ define([
 			if (count === 0){
 				status = iserror ? "error" : "good";
 				if (iserror && app.callEvent("ServerError",[]))
-					show_error_message();
+					show_error_message(err);
 
 				refresh();
 			}
@@ -38,9 +38,9 @@ define([
 	};
 
 	var texts = {
-		"good":	"Data in sync",
-		"error": "Error",
-		"saving": "Connecting..."
+		"good":	_("Status.Good"),
+		"error": _("Status.Error"),
+		"saving": _("Status.Saving")
 	};
 
 	function refresh(){
@@ -51,9 +51,9 @@ define([
 		count--;
 		setStatus("good");
 	}
-	function fail_event(){
+	function fail_event(err){
 		count--;
-		setStatus("error");
+		setStatus("error", err);
 	}
 	function start_event(promise, data){
 		if (promise){
@@ -67,12 +67,14 @@ define([
 
 	webix.attachEvent("onRemoteCall", start_event);
 
-	function show_error_message(){
+	function show_error_message(err){
 		webix.alert({
-			title:"Server side error",
-			text:"It seems the app has a problem to process your request.<br>Try to repeat the last action and if problem reoccurs - please reload the app.",
+			title:_("Status.ServerErrorTitle"),
+			text:_("Status.ServerErrorText"),
 			width:"550px"
 		});
+		if (err)
+			console.log(err.responseText || err);
 	}
 
 	return {
