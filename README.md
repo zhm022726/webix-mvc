@@ -1,11 +1,3 @@
-Webix MVC Core
-================
+Deprecated in favor of Webix Jet
 
-Micro-framework for Webix UI
-
-http://webix.com
-
-```
-nmp install slush slush-webix
-slush webix
-```
+https://github.com/webix-hub/jet-core
